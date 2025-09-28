@@ -1,0 +1,55 @@
+1.Basic SELECT,WHERE,ORDER BY,GROUP BY
+-- Get all Latte sales
+SELECT * FROM sales WHERE coffee_name = 'Latte';
+
+-- Order sales by money (highest first)
+SELECT * FROM sales ORDER BY money DESC;
+
+-- Total sales grouped by coffee type
+SELECT coffee_name, SUM(money) AS total_sales
+FROM sales
+GROUP BY coffee_name;
+2.Subquery
+
+-- Find sales  average transaction value
+SELECT * 
+FROM sales
+WHERE money > (SELECT AVG(money) FROM sales);
+3.Aggregate Functions
+-- Average sale value for each payment type
+SELECT cash_type, AVG(money) AS avg_sale
+FROM sales
+GROUP BY cash_type;
+
+-- Count how many times each coffee was sold
+SELECT coffee_name, COUNT(*) AS times_sold
+FROM sales
+GROUP BY coffee_name;
+4.Create View
+CREATE VIEW coffee_sales_summary AS
+SELECT coffee_name, SUM(money) AS total_sales, COUNT(*) AS orders
+FROM sales
+GROUP BY coffee_name; C
+5. Index Query
+SHOW INDEXES FROM sales;
+6.INNER JOIN
+-- Match sales with categories
+SELECT s.date, s.coffee_name, cp.category, s.money
+FROM sales s
+INNER JOIN coffee_prices cp
+    ON s.coffee_name = cp.coffee_name;
+7.LEFT JOIN
+-- All sales, with category if available
+SELECT s.date, s.coffee_name, cp.category, s.money
+FROM sales s
+LEFT JOIN coffee_prices cp
+    ON s.coffee_name = cp.coffee_name;
+8.RIGHT JOIN
+-- All coffee types, with sales if available
+SELECT s.date, s.coffee_name, cp.category, s.money
+FROM sales s
+RIGHT JOIN coffee_prices cp
+    ON s.coffee_name = cp.coffee_name;
+
+
+
